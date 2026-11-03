@@ -1,45 +1,21 @@
-import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useTheme } from "@/hooks/useTheme";
 
 export const ThemeToggle = () => {
-  const [isDarkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("Theme");
-    if (storedTheme === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      localStorage.setItem("Theme", "light");
-      setDarkMode(false);
-    }
-  }, []);
-
-  const toggleTeheme = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("Theme", "light");
-      setDarkMode(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("Theme", "dark");
-      setDarkMode(true);
-    }
-  };
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <button
-      onClick={toggleTeheme}
-      className={cn(
-        "fixed max-sm:hidden top-5 right-5 z-50 p-2 rounded-full transition-colors duration-300",
-        "focus:outline-hidden"
-      )}
+      type="button"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+      title={`Switch to ${isDark ? "light" : "dark"} mode`}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/70 text-foreground transition-colors hover:border-primary/50 hover:text-primary"
     >
-      {isDarkMode ? (
-        <Sun className="h-6 w-6 text-yellow-300" />
+      {isDark ? (
+        <Sun className="h-5 w-5 text-yellow-300" />
       ) : (
-        <Moon className="h-6 w-6 text-blue-900" />
+        <Moon className="h-5 w-5" />
       )}
     </button>
   );
